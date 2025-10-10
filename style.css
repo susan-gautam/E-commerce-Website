@@ -559,12 +559,11 @@ body {
   letter-spacing: 0.5px;     /* Clean spacing */
   padding: 8px 16px;
   border-radius: 8px;
-  transition: background-color 0.3s, color 0.3s;
+  transition: color 0.3s, color 0.3s;
 }
 
 .nav-links a:hover {
-  background-color: #eb3e2b; /* Purple hover background */
-  color: #fff;               /* Keep text white */
+  color: #eb3e2b; /* Purple hover background */               /* Keep text white */
 }
 
 
@@ -622,7 +621,7 @@ body {
 }
 
 .popup-search button:hover {
-  background: #eb3e2b;
+  background: #fafafa;
 }
 
 
