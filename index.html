@@ -12,10 +12,31 @@
 </head>
 <body>
 
+<header class="navbar">
+  <div class="left-section">
+    <img src="images/Logo.png" alt="One.Suppliers Logo" class="logo" />
+    <button id="smallSearchBtn" class="small-search-btn">🔍</button>
+  </div>
+
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="about.html">About</a>
+    <a href="form.html" id="loginLink">Login</a>
+  </nav>
+
+  <div class="right-section">
+    <div class="cart-icon" id="cartIcon">🛒</div>
+  </div>
+</header>
+
+<!-- Hidden search input popup -->
+<div id="popupSearch" class="popup-search">
+  <input type="text" id="popupSearchInput" placeholder="Search products..." />
+  <button id="popupSearchGo">Go</button>
+</div>
+
 <!-- Header -->
-<header class="logo-container">
-  <img src="images/Logo.png" alt="One.Suppliers Logo" class="logo" />
-  <div class="user-section">
     <!-- Welcome and Hamburger will be injected here -->
   </div>
 </header>
@@ -213,5 +234,4 @@
 <!-- Footer -->
 <footer>
   <p>&copy; 2025 One.Suppliers. All rights reserved.</p>
-
 </footer>
