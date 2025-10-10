@@ -162,3 +162,68 @@ document.addEventListener("DOMContentLoaded", () => {
     loginLink.style.color = "#eb3e2b";
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const smallSearchBtn = document.getElementById("smallSearchBtn");
+  const popupSearch = document.getElementById("popupSearch");
+  const popupSearchGo = document.getElementById("popupSearchGo");
+  const popupSearchInput = document.getElementById("popupSearchInput");
+  const cartIcon = document.getElementById("cartIcon");
+  const loginLink = document.getElementById("loginLink");
+  const navLinks = document.getElementById("navLinks");
+  const username = localStorage.getItem("username");
+
+  // ✅ Toggle search popup
+  if (smallSearchBtn && popupSearch) {
+    smallSearchBtn.addEventListener("click", () => {
+      const visible = popupSearch.style.display === "flex";
+      popupSearch.style.display = visible ? "none" : "flex";
+      popupSearchInput.focus();
+    });
+  }
+
+  // ✅ Handle search button
+  if (popupSearchGo) {
+    popupSearchGo.addEventListener("click", () => {
+      const query = popupSearchInput.value.trim().toLowerCase();
+      if (!query) return alert("Please enter a product name.");
+      localStorage.setItem("searchQuery", query);
+      window.location.href = "products.html";
+    });
+  }
+
+  // ✅ Close search popup when clicked outside
+  document.addEventListener("click", (e) => {
+    if (
+      popupSearch &&
+      !popupSearch.contains(e.target) &&
+      e.target.id !== "smallSearchBtn"
+    ) {
+      popupSearch.style.display = "none";
+    }
+  });
+
+  // ✅ Cart click
+  if (cartIcon) {
+    cartIcon.addEventListener("click", () => {
+      window.location.href = "cart.html";
+    });
+  }
+
+  // ✅ Update Login text and show Admin Dashboard for Susan
+  if (username && loginLink) {
+    loginLink.textContent = `Welcome, ${username}`;
+    loginLink.href = "profile.html";
+    loginLink.style.color = "#eb3e2b";
+
+    // --- Show Admin Dashboard link only for Susan ---
+    if (username.trim().toLowerCase() === "susan") {
+      const adminLink = document.createElement("a");
+      adminLink.href = "admin.html";
+      adminLink.textContent = "Admin Dashboard";
+      adminLink.classList.add("admin-link");
+      navLinks.appendChild(adminLink);
+    }
+  }
+});
+
