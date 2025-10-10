@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script type="module" src="script.js"></script>
+  
   <style>
     /* Products Page Styles */
     .products-container {
@@ -112,43 +113,60 @@
 </footer>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const products = [
-      { name: "Razer DeathAdder V2 Gaming Mouse", brand: "Razer", price: "Rs. 7999", image: "images/razer_mouse.webp", link: "product.html" },
-      { name: "Ajazz Mechanical Keyboard", brand: "Ajazz", price: "Rs. 7499", image: "images/Orange keyboard.webp", link: "product_2.html" },
-      { name: "HyperX Cloud II Headset", brand: "HyperX", price: "Rs. 12499", image: "images/hyperx_headset.jpg", link: "product_3.html" },
-      { name: "Anker Gaming Mouse Pad RGB", brand: "Anker", price: "Rs. 2499", image: "images/anker_pad.jpg", link: "#" },
-      { name: "Logitech G Pro Wireless Mouse", brand: "Logitech", price: "Rs. 13999", image: "images/logitech_mouse.jpg", link: "#" },
-      { name: "Corsair K95 RGB Platinum Keyboard", brand: "Corsair", price: "Rs. 15999", image: "images/corsair_k95.jpg", link: "#" },
-      { name: "Razer BlackShark V2 Headset", brand: "Razer", price: "Rs. 10999", image: "images/razer_headset.jpg", link: "#" },
-      { name: "Anker SoundCore Headphones", brand: "Anker", price: "Rs. 8999", image: "images/anker_headphones.jpg", link: "#" },
-      { name: "HyperX Alloy Origins Core Keyboard", brand: "HyperX", price: "Rs. 11499", image: "images/hyperx_keyboard.jpg", link: "#" },
-      { name: "Logitech G733 Wireless Headset", brand: "Logitech", price: "Rs. 14999", image: "images/logitech_headset.jpg", link: "#" },
-      { name: "Corsair Harpoon RGB Mouse", brand: "Corsair", price: "Rs. 4599", image: "images/corsair_mouse.jpg", link: "#" },
-      { name: "Ajazz AJ339 Wireless Mouse", brand: "Ajazz", price: "Rs. 3199", image: "images/Aj039 Black.png", link: "product.html" }
-    ];
+  // --- Filter products based on search query ---
+document.addEventListener("DOMContentLoaded", () => {
+  const query = localStorage.getItem("searchQuery");
+  if (query) {
+    const cards = document.querySelectorAll(".product-card");
+    let found = false;
+    cards.forEach(card => {
+      const name = card.querySelector("h3")?.textContent.toLowerCase() || "";
+      if (!name.includes(query)) {
+        card.style.display = "none";
+      } else {
+        found = true;
+      }
+    });
+    if (!found) {
+      const grid = document.getElementById("productGrid");
+      grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center;">No products found for "<strong>${query}</strong>"</p>`;
+    }
+    localStorage.removeItem("searchQuery"); // clear after use
+  }
+});
 
+  document.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById("productGrid");
 
-    products.forEach(p => {
+    // Default sample products
+    const defaultProducts = [
+      { name: "Razer DeathAdder V2", brand: "Razer", price: "Rs. 7999", image: "images/razer_mouse.webp" },
+      { name: "Ajazz Mechanical Keyboard", brand: "Ajazz", price: "Rs. 7499", image: "images/Orange keyboard.webp" },
+      { name: "HyperX Cloud II Headset", brand: "HyperX", price: "Rs. 12499", image: "images/hyperx_headset.jpg" },
+      { name: "Logitech G Pro Mouse", brand: "Logitech", price: "Rs. 13999", image: "images/logitech_mouse.jpg" },
+    ];
+
+    // Merge with admin-added products
+    const addedProducts = JSON.parse(localStorage.getItem("products") || "[]");
+    const allProducts = [...defaultProducts, ...addedProducts];
+
+    // Display all
+    allProducts.forEach(p => {
       const card = document.createElement("div");
       card.className = "product-card";
       card.innerHTML = `
         <img src="${p.image}" alt="${p.name}">
         <h3>${p.name}</h3>
-        <p>Brand: ${p.brand}</p>
+        <p>Brand: ${p.brand || "One.Suppliers"}</p>
         <p class="product-price">${p.price}</p>
       `;
-      card.addEventListener("click", () => {
-        if (p.link !== "#") {
-          window.location.href = p.link;
-        }
-      });
       grid.appendChild(card);
     });
   });
 </script>
 
+
 <script src="addons.js"></script>
 </body>
 </html>
+
