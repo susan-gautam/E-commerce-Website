@@ -106,3 +106,59 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+// --- Small Search Popup Logic ---
+document.addEventListener("DOMContentLoaded", () => {
+  const smallSearchBtn = document.getElementById("smallSearchBtn");
+  const popupSearch = document.getElementById("popupSearch");
+  const popupSearchGo = document.getElementById("popupSearchGo");
+  const popupSearchInput = document.getElementById("popupSearchInput");
+  const cartIcon = document.getElementById("cartIcon");
+  const username = localStorage.getItem("username");
+
+  // Toggle search popup visibility
+  if (smallSearchBtn && popupSearch) {
+    smallSearchBtn.addEventListener("click", () => {
+      popupSearch.style.display =
+        popupSearch.style.display === "block" ? "none" : "block";
+      popupSearchInput.focus();
+    });
+  }
+
+  // Search functionality
+  if (popupSearchGo) {
+    popupSearchGo.addEventListener("click", () => {
+      const query = popupSearchInput.value.trim().toLowerCase();
+      if (!query) return alert("Please enter a product name.");
+      localStorage.setItem("searchQuery", query);
+      window.location.href = "products.html";
+    });
+  }
+
+  // Hide popup when clicking outside
+  document.addEventListener("click", (e) => {
+    if (
+      popupSearch &&
+      !popupSearch.contains(e.target) &&
+      e.target.id !== "smallSearchBtn"
+    ) {
+      popupSearch.style.display = "none";
+    }
+  });
+
+  // Cart functionality
+  if (cartIcon) {
+    cartIcon.addEventListener("click", () => {
+      window.location.href = "cart.html";
+    });
+  }
+
+  // Update login to show username
+  const loginLink = document.getElementById("loginLink");
+  if (loginLink && username) {
+    loginLink.textContent = `Welcome, ${username}`;
+    loginLink.href = "profile.html";
+    loginLink.style.color = "#eb3e2b";
+  }
+});
