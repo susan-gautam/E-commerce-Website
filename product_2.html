@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details - Mechanical Keyboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+
+<!-- Header -->
+<header class="logo-container">
+  <img src="images/Logo.png" alt="One.Suppliers Logo" class="logo" />
+  <div class="user-section"></div>
+</header>
+
+<!-- Back to Home Button -->
+<div style="text-align: center;">
+  <a href="index.html" class="back-button">← Back to Home</a>
+</div>
+
+<!-- Product Detail Section -->
+<div class="product-detail-container">
+  <!-- Left: Product Image -->
+  <div class="product-image">
+    <img src="images/Orange keyboard.webp" alt="Mechanical Keyboard">
+  </div>
+
+  <!-- Right: Product Info -->
+  <div class="product-info">
+    <div class="product-title">Ajazz Mechanical Keyboard</div>
+    <div class="product-price">
+      <span class="old-price">Rs. 9999</span>
+      <span class="new-price">Rs. 7499</span>
+    </div>
+    <div class="product-description">
+      <p>High-performance mechanical keyboard for gaming and productivity.</p>
+      <p>Customizable RGB lighting and hot-swappable switches.</p> 
+      <p>Perfect for professional and casual gamers.</p>
+      <p>Durable aluminum frame and ergonomic key layout.</p>
+      <p>Plug-and-play via USB connection.</p>
+    </div>
+    <p><a href="#" class="esewa-box">Pay with eSewa</a></p>
+  </div>
+</div>
+
+<!-- QR Code Popup -->
+<div id="qr-popup" style="display:none;">
+  <div class="qr-popup-content">
+    <span id="qr-close">&times;</span>
+    <img src="images/QR.png" alt="eSewa QR Code" />
+  </div>
+</div>
+
+<!-- Khalti QR Code Popup -->
+<div id="khalti-popup" style="display:none;">
+  <div class="qr-popup-content khalti-content">
+    <span id="khalti-close">&times;</span>
+    <img src="images/QR_2.png" alt="Khalti QR Code" />
+  </div>
+</div>
+
+<!-- Hamburger Menu Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const username = localStorage.getItem("username");
+    const userSection = document.querySelector(".user-section");
+
+    const hamburger = document.createElement("div");
+    hamburger.id = "hamburger";
+    hamburger.innerHTML = "&#9776;";
+    userSection.appendChild(hamburger);
+
+    if (username) {
+      const welcome = document.createElement("span");
+      welcome.id = "welcome-user";
+      welcome.textContent = `Welcome, ${username}`;
+      welcome.style.fontWeight = "bold";
+      welcome.style.color = "#eb3e2b";
+      userSection.insertBefore(welcome, hamburger);
+    }
+
+    const dropdown = document.createElement("ul");
+    dropdown.id = "hamburger-dropdown";
+    if (username) {
+      dropdown.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#" id="logout-link">Logout</a></li>
+      `;
+    } else {
+      dropdown.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="form.html" id="login-link">Login</a></li>
+      `;
+    }
+    userSection.appendChild(dropdown);
+
+    if (window.innerWidth > 768) dropdown.style.display = "flex";
+    else dropdown.style.display = "none";
+
+    hamburger.addEventListener("click", function () {
+      const isVisible = dropdown.style.display === "block";
+      dropdown.style.display = isVisible ? "none" : "block";
+    });
+
+    document.body.addEventListener("click", function (e) {
+      if (e.target && e.target.id === 'logout-link') {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = '/';
+      }
+    });
+  });
+</script>
+
+<!-- eSewa QR Popup Script -->
+<script>
+  $(document).ready(function() {
+    $('.esewa-box').click(function(e) {
+      e.preventDefault();
+      $('#qr-popup').fadeIn();
+    });
+    $('#qr-close').click(function() {
+      $('#qr-popup').fadeOut();
+    });
+    $('#qr-popup').click(function(e) {
+      if (e.target == this) $(this).fadeOut();
+    });
+  });
+</script>
+
+<!-- Khalti QR Popup Script -->
+<script>
+$(document).ready(function() {
+  $('.khalti-box').on('click', function(e) {
+    e.preventDefault();
+    $('#khalti-popup').fadeIn();
+  });
+  $('#khalti-close').on('click', function() {
+    $('#khalti-popup').fadeOut();
+  });
+  $('#khalti-popup').on('click', function(e) {
+    if (e.target === this) $(this).fadeOut();
+  });
+});
+</script>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 One.Suppliers. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+
+<link rel="stylesheet" href="addons.css">
+<script src="addons.js"></script>

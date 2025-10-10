@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="addons.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="logo-container">
+    <img src="images/Logo.png" alt="One.Suppliers Logo" class="logo" />
+    <div class="user-section"></div>
+  </header>
+
+  <!-- Back to Home Button -->
+  <div style="text-align: center;">
+    <a href="index.html" class="back-button">← Back to Home</a>
+  </div>
+
+  <!-- Profile Section -->
+  <div class="profile-page">
+    <h1>User Profile</h1>
+    <img id="profile-pic" src="images/default-profile.png" alt="Profile Picture">
+    <br>
+    <input type="file" id="photo-upload" accept="image/*">
+    
+    <div class="profile-info">
+      <label>Full Name:</label>
+      <input type="text" id="full-name" placeholder="Full Name">
+
+      <label>Phone Number:</label>
+      <input type="text" id="phone" placeholder="Phone Number">
+
+      <label>Location:</label>
+      <input type="text" id="location" placeholder="Enter your location">
+    </div>
+
+    <div class="settings">
+      <h2>⚙️ Settings</h2>
+      <button id="save-profile">Save Profile</button>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <script>
+    // Reuse the same header dropdown logic
+    document.addEventListener("DOMContentLoaded", function () {
+      const username = localStorage.getItem("username");
+      const userSection = document.querySelector(".user-section");
+
+      const hamburger = document.createElement("div");
+      hamburger.id = "hamburger";
+      hamburger.innerHTML = "&#9776;";
+      userSection.appendChild(hamburger);
+
+      if (username) {
+        const welcome = document.createElement("span");
+        welcome.id = "welcome-user";
+        welcome.textContent = `Welcome, ${username}`;
+        welcome.style.fontWeight = "bold";
+        welcome.style.color = "#eb3e2b";
+        userSection.insertBefore(welcome, hamburger);
+      }
+
+      const dropdown = document.createElement("ul");
+      dropdown.id = "hamburger-dropdown";
+      dropdown.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="form.html" id="logout-link">Logout</a></li>
+      `;
+      userSection.appendChild(dropdown);
+
+      if (window.innerWidth > 768) dropdown.style.display = "flex";
+      hamburger.addEventListener("click", function () {
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+      });
+    });
+
+    // Profile page logic
+    document.addEventListener("DOMContentLoaded", () => {
+      const name = localStorage.getItem("username") || "User";
+      document.getElementById("full-name").value = name;
+      document.getElementById("phone").value = localStorage.getItem("phone") || "";
+      document.getElementById("location").value = localStorage.getItem("location") || "";
+
+      const savedPic = localStorage.getItem("profile-pic");
+      if (savedPic) document.getElementById("profile-pic").src = savedPic;
+
+      document.getElementById("photo-upload").addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = ev => {
+            document.getElementById("profile-pic").src = ev.target.result;
+            localStorage.setItem("profile-pic", ev.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document.getElementById("save-profile").addEventListener("click", () => {
+        localStorage.setItem("username", document.getElementById("full-name").value);
+        localStorage.setItem("phone", document.getElementById("phone").value);
+        localStorage.setItem("location", document.getElementById("location").value);
+        alert("Profile saved successfully!");
+      });
+
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.clear();
+        window.location.href = "form.html";
+      });
+    });
+  </script>
+</body>
+</html>

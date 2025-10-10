@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="addons.css">
+  <style>
+    .remove-btn {
+      background-color: #eb3e2b;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .remove-btn:hover {
+      background-color: #ff5733;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="logo-container">
+    <img src="images/Logo.png" alt="One.Suppliers Logo" class="logo" />
+    <div class="user-section"></div>
+  </header>
+
+  <!-- Cart Section -->
+  <div class="cart-page">
+    <h2>🛒 Your Shopping Cart</h2>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-total" id="cart-total">Total: Rs. 0</div>
+
+    <div style="text-align:center; margin-top:20px;">
+      <a href="index.html" class="back-button">Continue Shopping</a>
+    </div>
+  </div>
+
+  <script>
+    // --- Header / Welcome Dropdown (same behavior as product page) ---
+    document.addEventListener("DOMContentLoaded", function () {
+      const username = localStorage.getItem("username");
+      const userSection = document.querySelector(".user-section");
+
+      const hamburger = document.createElement("div");
+      hamburger.id = "hamburger";
+      hamburger.innerHTML = "&#9776;";
+      userSection.appendChild(hamburger);
+
+      if (username) {
+        const welcome = document.createElement("span");
+        welcome.id = "welcome-user";
+        welcome.textContent = `Welcome, ${username}`;
+        welcome.style.fontWeight = "bold";
+        welcome.style.color = "#eb3e2b";
+        userSection.insertBefore(welcome, hamburger);
+
+        // Make welcome clickable → profile.html
+        welcome.style.cursor = "pointer";
+        welcome.addEventListener("click", () => {
+          window.location.href = "profile.html";
+        });
+      }
+
+      const dropdown = document.createElement("ul");
+      dropdown.id = "hamburger-dropdown";
+      dropdown.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="form.html" id="logout-link">Logout</a></li>
+      `;
+      userSection.appendChild(dropdown);
+
+      if (window.innerWidth > 768) dropdown.style.display = "flex";
+      hamburger.addEventListener("click", function () {
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+      });
+
+      document.body.addEventListener("click", function (e) {
+        if (e.target && e.target.id === 'logout-link') {
+          e.preventDefault();
+          localStorage.clear();
+          window.location.href = 'form.html';
+        }
+      });
+    });
+
+    // --- Cart Logic with Remove Functionality ---
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("cart-items");
+      const totalEl = document.getElementById("cart-total");
+
+      function renderCart() {
+        const items = JSON.parse(localStorage.getItem("cartItems") || "[]");
+        container.innerHTML = "";
+        let total = 0;
+
+        if (items.length === 0) {
+          container.innerHTML = "<p>Your cart is empty.</p>";
+          totalEl.textContent = "Total: Rs. 0";
+          return;
+        }
+
+        items.forEach((item, index) => {
+          const div = document.createElement("div");
+          div.className = "cart-item";
+          div.innerHTML = `
+            <span>${item.name}</span>
+            <span>Rs. ${item.price}</span>
+            <button class="remove-btn" data-index="${index}">Remove</button>
+          `;
+          container.appendChild(div);
+          total += item.price;
+        });
+
+        totalEl.textContent = `Total: Rs. ${total}`;
+
+        // Attach remove event to each button
+        document.querySelectorAll(".remove-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            const index = parseInt(e.target.getAttribute("data-index"));
+            removeFromCart(index);
+          });
+        });
+      }
+
+      function removeFromCart(index) {
+        const items = JSON.parse(localStorage.getItem("cartItems") || "[]");
+        items.splice(index, 1);
+        localStorage.setItem("cartItems", JSON.stringify(items));
+        renderCart();
+      }
+
+      renderCart();
+    });
+  </script>
+
+<!-- cart button -->
+<div style="text-align:center; margin-top: 30px;">
+  <a href="index.html" class="back-button">← Back to Home</a>
+  <button id="confirm-order" style="margin-left:15px; padding:10px 20px; background:#8a2be2; color:white; border:none; border-radius:10px; cursor:pointer;">
+    Confirm Order
+  </button>
+</div>
+
+<!-- cart button js -->
+<script>
+  document.getElementById("confirm-order").addEventListener("click", () => {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    if (cartItems.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    alert("Order Confirmed! Thank you for shopping with One.Suppliers.");
+    localStorage.removeItem("cartItems");
+    window.location.href = "index.html";
+  });
+</script>
+
+
+</body>
+</html>
+
+

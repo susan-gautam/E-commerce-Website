@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products - One.Suppliers</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="module" src="script.js"></script>
+  <style>
+    /* Products Page Styles */
+    .products-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .products-container h1 {
+      text-align: center;
+      color: #eb3e2b;
+      margin-bottom: 30px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .product-card h3 {
+      margin-top: 10px;
+      color: #333;
+    }
+
+    .product-card p {
+      margin: 5px 0;
+      color: #777;
+    }
+
+    .product-price {
+      font-weight: bold;
+      color: #8a2be2;
+      margin-top: 5px;
+    }
+
+    .back-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #444;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #525151;
+    }
+
+    .back-container {
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="logo-container">
+  <img src="images/Logo.png" alt="One.Suppliers Logo" class="logo" />
+  <div class="user-section"></div>
+</header>
+
+<!-- Back Button -->
+<div class="back-container">
+  <a href="index.html" class="back-button">← Back to Home</a>
+</div>
+
+<!-- Products Section -->
+<div class="products-container">
+  <h1>Explore Our Gaming Accessories</h1>
+  <div class="product-grid" id="productGrid">
+    <!-- Cards dynamically populated -->
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 One.Suppliers. All rights reserved.</p>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const products = [
+      { name: "Razer DeathAdder V2 Gaming Mouse", brand: "Razer", price: "Rs. 7999", image: "images/razer_mouse.webp", link: "product.html" },
+      { name: "Ajazz Mechanical Keyboard", brand: "Ajazz", price: "Rs. 7499", image: "images/Orange keyboard.webp", link: "product_2.html" },
+      { name: "HyperX Cloud II Headset", brand: "HyperX", price: "Rs. 12499", image: "images/hyperx_headset.jpg", link: "product_3.html" },
+      { name: "Anker Gaming Mouse Pad RGB", brand: "Anker", price: "Rs. 2499", image: "images/anker_pad.jpg", link: "#" },
+      { name: "Logitech G Pro Wireless Mouse", brand: "Logitech", price: "Rs. 13999", image: "images/logitech_mouse.jpg", link: "#" },
+      { name: "Corsair K95 RGB Platinum Keyboard", brand: "Corsair", price: "Rs. 15999", image: "images/corsair_k95.jpg", link: "#" },
+      { name: "Razer BlackShark V2 Headset", brand: "Razer", price: "Rs. 10999", image: "images/razer_headset.jpg", link: "#" },
+      { name: "Anker SoundCore Headphones", brand: "Anker", price: "Rs. 8999", image: "images/anker_headphones.jpg", link: "#" },
+      { name: "HyperX Alloy Origins Core Keyboard", brand: "HyperX", price: "Rs. 11499", image: "images/hyperx_keyboard.jpg", link: "#" },
+      { name: "Logitech G733 Wireless Headset", brand: "Logitech", price: "Rs. 14999", image: "images/logitech_headset.jpg", link: "#" },
+      { name: "Corsair Harpoon RGB Mouse", brand: "Corsair", price: "Rs. 4599", image: "images/corsair_mouse.jpg", link: "#" },
+      { name: "Ajazz AJ339 Wireless Mouse", brand: "Ajazz", price: "Rs. 3199", image: "images/Aj039 Black.png", link: "product.html" }
+    ];
+
+    const grid = document.getElementById("productGrid");
+
+    products.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p>Brand: ${p.brand}</p>
+        <p class="product-price">${p.price}</p>
+      `;
+      card.addEventListener("click", () => {
+        if (p.link !== "#") {
+          window.location.href = p.link;
+        }
+      });
+      grid.appendChild(card);
+    });
+  });
+</script>
+
+<script src="addons.js"></script>
+</body>
+</html>

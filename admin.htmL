@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - One.Suppliers</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .admin-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #444;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    .admin-container h2 {
+      text-align: center;
+      color: #eb3e2b;
+      margin-bottom: 20px;
+    }
+    .admin-container label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    .admin-container input, .admin-container textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 10px;
+      margin-top: 5px;
+    }
+    .admin-container button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #eb3e2b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .admin-container button:hover {
+      background-color: #c73220;
+    }
+
+    /* Back button styling (same as other pages) */
+    .back-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #444;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #929090;
+    }
+
+    .back-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="logo-container">
+  <img src="images/Logo.png" alt="One.Suppliers Logo" class="logo" />
+  <div class="user-section"></div>
+</header>
+
+<!-- ✅ Back to Home Button -->
+<div class="back-container">
+  <a href="index.html" class="back-button">← Back to Home</a>
+</div>
+
+<div class="admin-container">
+  <h2>Admin Dashboard</h2>
+
+  <form id="addProductForm">
+    <label>Product Name:</label>
+    <input type="text" id="productName" required>
+
+    <label>Price (Rs):</label>
+    <input type="number" id="productPrice" required>
+
+    <label>Description:</label>
+    <textarea id="productDesc" rows="4" required></textarea>
+
+    <label>Product Image (URL or file path):</label>
+    <input type="text" id="productImg" required>
+
+    <button type="submit">Add Product</button>
+  </form>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const username = localStorage.getItem("username");
+
+    // Restrict access only to "Susan"
+    if (username !== "Susan") {
+      alert("Access denied. Only admin (Susan) can access this page.");
+      window.location.href = "index.html";
+      return;
+    }
+
+    document.getElementById("addProductForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const product = {
+        name: document.getElementById("productName").value.trim(),
+        price: parseInt(document.getElementById("productPrice").value),
+        description: document.getElementById("productDesc").value.trim(),
+        image: document.getElementById("productImg").value.trim(),
+      };
+
+      // Store product data in localStorage for now
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      products.push(product);
+      localStorage.setItem("products", JSON.stringify(products));
+
+      alert("Product added successfully!");
+      document.getElementById("addProductForm").reset();
+    });
+  });
+</script>
+
+</body>
+</html>

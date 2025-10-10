@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+
+<!-- Header -->
+<header class="logo-container">
+  <img src="images/Logo.png" alt="One.Suppliers Logo" class="logo" />
+  <div class="user-section"></div>
+</header>
+
+<!-- Back to Home Button -->
+<div style="text-align: center;">
+  <a href="index.html" class="back-button">← Back to Home</a>
+</div>
+
+<!-- Product Detail Section -->
+<div class="product-detail-container">
+  <!-- Left: Product Image -->
+  <div class="product-image">
+    <img src="images/Aj039 Black.png" alt="Gaming Mouse">
+  </div>
+
+  <!-- Right: Product Info -->
+  <div class="product-info">
+    <div class="product-title">Ajazz Gaming Mouse - RGB</div>
+    <div class="product-price">
+      <span class="old-price">Rs. 3400</span>
+      <span class="new-price">Rs. 2999</span>
+    </div>
+    <div class="product-description">
+      <p>High-performance gaming mouse with precision tracking</p>
+      <p>Customizable buttons, and vibrant RGB lighting.</p> 
+      <p>Perfect for FPS and MOBA gamer</p>
+      <p>Ergonomic design that ensures comfort during long sessions</p>
+      <p>Plug-and-play with no driver needed</p>
+    </div>
+    <p><a href="#" class="esewa-box">Pay with eSewa</a></p>
+  </div>
+</div>
+
+<!-- QR Code Popup -->
+<div id="qr-popup" style="display:none;">
+  <div class="qr-popup-content">
+    <span id="qr-close">&times;</span>
+    <img src="images/QR.png" alt="eSewa QR Code" />
+  </div>
+</div>
+
+<!-- Khalti QR Code Popup -->
+<div id="khalti-popup" style="display:none;">
+  <div class="qr-popup-content khalti-content">
+    <span id="khalti-close">&times;</span>
+    <img src="images/QR_2.png" alt="Khalti QR Code" />
+  </div>
+</div>
+
+
+
+<!-- Hamburger Menu Script-->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const username = localStorage.getItem("username");
+    const userSection = document.querySelector(".user-section");
+
+    // Hamburger icon
+    const hamburger = document.createElement("div");
+    hamburger.id = "hamburger";
+    hamburger.innerHTML = "&#9776;";
+    userSection.appendChild(hamburger);
+
+    // Welcome text if logged in
+    if (username) {
+      const welcome = document.createElement("span");
+      welcome.id = "welcome-user";
+      welcome.textContent = `Welcome, ${username}`;
+      welcome.style.fontWeight = "bold";
+      welcome.style.color = "#eb3e2b";
+      userSection.insertBefore(welcome, hamburger);
+    }
+
+    // Dropdown menu
+    const dropdown = document.createElement("ul");
+    dropdown.id = "hamburger-dropdown";
+    if (username) {
+      dropdown.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#" id="logout-link">Logout</a></li>
+      `;
+    } else {
+      dropdown.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="form.html" id="login-link">Login</a></li>
+      `;
+    }
+    userSection.appendChild(dropdown);
+
+    // Show desktop nav by default
+    if (window.innerWidth > 768) {
+      dropdown.style.display = "flex";
+    } else {
+      dropdown.style.display = "none";
+    }
+
+    // Toggle dropdown
+    hamburger.addEventListener("click", function () {
+      const isVisible = dropdown.style.display === "block";
+      dropdown.style.display = isVisible ? "none" : "block";
+      if (!isVisible) positionDropdown();
+    });
+
+    // Logout handling
+    document.body.addEventListener("click", function (e) {
+      if (e.target && e.target.id === 'logout-link') {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = '/';
+      }
+    });
+
+    function positionDropdown() {
+      const rect = hamburger.getBoundingClientRect();
+      dropdown.style.top = `${rect.bottom + window.scrollY + 8}px`;
+      dropdown.style.left = `${rect.right + window.scrollX - 120}px`;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (dropdown.style.display === "block") positionDropdown();
+    });
+    window.addEventListener("resize", () => {
+      if (dropdown.style.display === "block") positionDropdown();
+    });
+    document.addEventListener("click", function (e) {
+      if (!dropdown.contains(e.target) && e.target.id !== "hamburger") {
+        dropdown.style.display = "none";
+      }
+    });
+  });
+</script>
+
+<!-- eSewa QR Popup Script -->
+<script>
+  $(document).ready(function() {
+    $('.esewa-box').click(function(e) {
+      e.preventDefault();
+      $('#qr-popup').fadeIn();
+    });
+    $('#qr-close').click(function() {
+      $('#qr-popup').fadeOut();
+    });
+    $('#qr-popup').click(function(e) {
+      if (e.target == this) $(this).fadeOut();
+    });
+  });
+</script>
+
+<script>
+  // Khalti QR Popup Script (add after your eSewa block)
+$(document).ready(function() {
+  // open khalti popup when Khalti button is clicked
+  $('.khalti-box').on('click', function(e) {
+    e.preventDefault();
+    $('#khalti-popup').fadeIn();
+  });
+
+  // close when the X is clicked
+  $('#khalti-close').on('click', function() {
+    $('#khalti-popup').fadeOut();
+  });
+
+  // close when clicking outside the content box
+  $('#khalti-popup').on('click', function(e) {
+    if (e.target === this) $(this).fadeOut();
+  });
+});
+
+</script>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 One.Suppliers. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+
+<link rel="stylesheet" href="addons.css">
+<script src="addons.js"></script>
+

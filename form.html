@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script type="module" src="firebase.js"></script>
+<script type="module">
+  import { ref, set, getDatabase } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("loginForm");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const firstname = document.getElementById("firstname").value;
+      const lastname = document.getElementById("lastname").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const password = document.getElementById("password").value;
+
+      const db = window.db;
+
+      const userID = phone.replace(/\D/g, ""); // Use phone as user ID
+
+      try {
+        await window.set(window.ref(db, 'user/' + userID), {
+          firstname,
+          lastname,
+          email,
+          phone,
+          password
+        });
+
+        // Save name to local storage for display on homepage
+        localStorage.setItem("username", firstname);
+
+        alert("User logged in successfully!");
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("Error writing user data:", error);
+        alert("Failed to log in");
+      }
+    });
+  });
+  
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - One.Suppliers</title>
+  <link rel="stylesheet" href="style.css" />
+  <div style="text-align:center; margin-top:15px;">
+  <a href="index.html" class="back-button">← Back to Home</a>
+  </div>
+  <style>
+    
+    /* Login Box Styling */
+    .login-box {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 30px 40px;
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .login-box label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #ccc;
+      font-weight: bold;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    .login-box input:focus {
+      outline: 2px solid #eb3e2b;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background-color: #eb3e2b;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    .login-box button:hover {
+      background-color: #ff654a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <label for="firstname">First Name</label>
+      <input type="text" id="firstname" name="firstname" required>
+
+      <label for="lastname">Last Name</label>
+      <input type="text" id="lastname" name="lastname" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>
