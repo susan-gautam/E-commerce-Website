@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - One.Suppliers</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <style>
     .admin-container {
       max-width: 700px;
-      margin: 50px auto;
-      padding: 20px;
+      margin: 40px auto;
+      padding: 25px;
       background: #444;
       border-radius: 15px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -18,52 +18,79 @@
     .admin-container h2 {
       text-align: center;
       color: #eb3e2b;
-      margin-bottom: 20px;
     }
     .admin-container label {
-      font-weight: bold;
       display: block;
       margin-top: 15px;
+      font-weight: bold;
     }
     .admin-container input, .admin-container textarea {
       width: 100%;
       padding: 10px;
-      border: 1px solid #444;
+      border: 1px solid #ccc;
       border-radius: 10px;
       margin-top: 5px;
     }
     .admin-container button {
-      margin-top: 20px;
       width: 100%;
+      margin-top: 20px;
       padding: 12px;
-      background-color: #eb3e2b;
+      background: #6cca00;
       color: white;
       border: none;
       border-radius: 10px;
       cursor: pointer;
     }
     .admin-container button:hover {
-      background-color: #c73220;
+      background: #71d400;
     }
-
-    /* Back button styling (same as other pages) */
+    .back-container {
+      text-align: center;
+      margin-top: 15px;
+    }
     .back-button {
       display: inline-block;
       padding: 10px 20px;
-      background-color: #444;
-      color: #fff;
+      background: #444;
+      color: white;
       border-radius: 8px;
       text-decoration: none;
-      transition: background-color 0.3s ease;
     }
-
-    .back-button:hover {
-      background-color: #929090;
+    .product-list {
+      margin-top: 30px;
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 10px;
+      max-height: 300px;
+      overflow-y: auto;
     }
-
-    .back-container {
-      text-align: center;
-      margin-top: 20px;
+    .product-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .product-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 5px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+    .product-item button {
+      background: #eb3e2b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .product-item button:hover {
+      background: #c73220;
     }
   </style>
 </head>
@@ -74,7 +101,6 @@
   <div class="user-section"></div>
 </header>
 
-<!-- ✅ Back to Home Button -->
 <div class="back-container">
   <a href="index.html" class="back-button">← Back to Home</a>
 </div>
@@ -90,46 +116,82 @@
     <input type="number" id="productPrice" required>
 
     <label>Description:</label>
-    <textarea id="productDesc" rows="4" required></textarea>
+    <textarea id="productDesc" rows="3" required></textarea>
 
-    <label>Product Image (URL or file path):</label>
-    <input type="text" id="productImg" required>
+    <label>Upload Product Image:</label>
+    <input type="file" id="productImage" accept="image/*" required>
 
     <button type="submit">Add Product</button>
   </form>
+
+  <div class="product-list" id="productList">
+    <h3 style="color:#eb3e2b;">Existing Products</h3>
+  </div>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const username = localStorage.getItem("username");
-
-    // Restrict access only to "Susan"
     if (username !== "Susan") {
       alert("Access denied. Only admin (Susan) can access this page.");
       window.location.href = "index.html";
       return;
     }
 
-    document.getElementById("addProductForm").addEventListener("submit", (e) => {
+    const form = document.getElementById("addProductForm");
+    const productList = document.getElementById("productList");
+
+    // Load existing products
+    const loadProducts = () => {
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      productList.innerHTML = '<h3 style="color:#eb3e2b;">Existing Products</h3>';
+      products.forEach((p, i) => {
+        const div = document.createElement("div");
+        div.className = "product-item";
+        div.innerHTML = `
+          <img src="${p.image}" alt="${p.name}">
+          <span>${p.name} - Rs. ${p.price}</span>
+          <button onclick="removeProduct(${i})">Delete</button>
+        `;
+        productList.appendChild(div);
+      });
+    };
+
+    loadProducts();
+
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const product = {
-        name: document.getElementById("productName").value.trim(),
-        price: parseInt(document.getElementById("productPrice").value),
-        description: document.getElementById("productDesc").value.trim(),
-        image: document.getElementById("productImg").value.trim(),
+      const reader = new FileReader();
+      const file = document.getElementById("productImage").files[0];
+
+      reader.onload = () => {
+        const product = {
+          name: document.getElementById("productName").value.trim(),
+          price: parseInt(document.getElementById("productPrice").value),
+          description: document.getElementById("productDesc").value.trim(),
+          image: reader.result, // base64 image
+        };
+
+        const products = JSON.parse(localStorage.getItem("products") || "[]");
+        products.push(product);
+        localStorage.setItem("products", JSON.stringify(products));
+
+        alert("Product added successfully!");
+        form.reset();
+        loadProducts();
       };
 
-      // Store product data in localStorage for now
-      const products = JSON.parse(localStorage.getItem("products") || "[]");
-      products.push(product);
-      localStorage.setItem("products", JSON.stringify(products));
-
-      alert("Product added successfully!");
-      document.getElementById("addProductForm").reset();
+      if (file) reader.readAsDataURL(file);
     });
+
+    window.removeProduct = (index) => {
+      const products = JSON.parse(localStorage.getItem("products") || "[]");
+      products.splice(index, 1);
+      localStorage.setItem("products", JSON.stringify(products));
+      loadProducts();
+    };
   });
 </script>
-
 </body>
 </html>
