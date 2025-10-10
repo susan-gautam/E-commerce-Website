@@ -504,3 +504,146 @@ body {
 .back-button:hover {
   background-color: #5a5a5a; /* darker on hover */
 }
+
+/* --- Navbar Layout --- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a1a1a;
+  padding: 10px 40px;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo {
+  width: 120px;
+  cursor: pointer;
+}
+
+/* Left Section (Logo + Search Icon) */
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.small-search-btn {
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8a2be2;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.small-search-btn:hover {
+  color: #eb3e2b;
+  transform: scale(1.1);
+}
+
+/* Middle Nav */
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+/* --- Center Nav Links --- */
+.nav-links a {
+  text-decoration: none;
+  color: white;              /* White text */
+  font-weight: 700;          /* Bolder for better visibility */
+  font-size: 18px;           /* Bigger font */
+  letter-spacing: 0.5px;     /* Clean spacing */
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links a:hover {
+  background-color: #eb3e2b; /* Purple hover background */
+  color: #fff;               /* Keep text white */
+}
+
+
+/* Right Section (Cart Icon) */
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.cart-icon {
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.cart-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Popup Search Box */
+/* --- Sideways Popup Search --- */
+.popup-search {
+  display: none;
+  position: absolute;
+  top: 18px;                 /* aligns with logo */
+  left: 190px;               /* shifts right of logo */
+  background: white;
+  padding: 6px 10px;
+  border-radius: 25px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+}
+
+.popup-search input {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  outline: none;
+  width: 160px;
+  font-size: 14px;
+}
+
+.popup-search button {
+  background: #8a2be2;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup-search button:hover {
+  background: #eb3e2b;
+}
+
+
+.popup-search input {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  outline: none;
+  width: 160px;
+}
+
+.popup-search button {
+  background: #8a2be2;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.popup-search button:hover {
+  background: #eb3e2b;
+}
