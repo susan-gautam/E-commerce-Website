@@ -1,2 +1,4 @@
-# mobile_prog
-For course PRG 402.
+Capstone Project
+
+E-commerce Website for One Suppliers 
+
