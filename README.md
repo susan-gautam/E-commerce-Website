@@ -1,4 +1,5 @@
-Capstone Project
+**Capstone Project**
 
-E-commerce Website for One Suppliers 
+This is basic website made using HTML5, CSS3, JS which is hosted in free tier of netlify for business named One Suppliers.
+
 
